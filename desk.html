@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>느린 우체통 💌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gowun+Dodum&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="desk.css">
+</head>
+<body>
+  <header>
+    <h1>느린 우체통 💌</h1>
+    <div id="shelf" class="shelf"></div>
+    <button id="muteBtn" class="mute">🔊</button>
+  </header>
+
+  <nav class="steps">
+    <button class="step" data-step="1">✍️ 편지</button>
+    <button class="step" data-step="2">🖼️ 사진·그림</button>
+    <button class="step" data-step="3">🍪 선물</button>
+    <button class="step" data-step="4">🕯️ 실링</button>
+    <button class="step" data-step="5">📦 상자</button>
+  </nav>
+
+  <main class="desk">
+    <section class="scene" id="scene">
+      <div id="paper" class="paper">
+        <div class="paper-head">To. 미래의 나 <span id="todayLabel"></span></div>
+        <textarea id="letterText" placeholder="나에게 하고 싶은 말을 적어보세요..."></textarea>
+        <div class="paper-foot">From. 지금의 나</div>
+      </div>
+
+      <div id="envelope" class="envelope hidden">
+        <div class="env-flap"></div>
+        <div id="meltStick" class="melt-stick hidden"></div>
+        <div id="puddle" class="puddle hidden"></div>
+        <div id="envSeal" class="wax seal-spot hidden"></div>
+        <div id="stampPress" class="stamp-press hidden">
+          <div class="stamp-handle"></div>
+          <div class="stamp-head"><span id="stampFace"></span></div>
+        </div>
+      </div>
+
+      <div id="polaroid" class="polaroid hidden"><div class="tape"></div><img id="polaroidImg" alt=""></div>
+
+      <div id="giftBag" class="gift-bag hidden">
+        <div id="giftItems" class="gift-items"></div>
+        <div class="vinyl"></div>
+        <div class="ribbon"></div>
+      </div>
+
+      <div id="sealKit" class="seal-kit hidden">
+        <div id="candle" class="candle">
+          <div class="holder"></div>
+          <div class="candle-body"></div>
+          <div class="wick"></div>
+          <div id="flame" class="flame hidden"></div>
+        </div>
+        <div class="wax-stick"></div>
+        <div class="matchbox">성냥</div>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <div class="panel-page" data-page="1">
+        <h2>✍️ 편지 쓰기</h2>
+        <p class="tip">편지지를 고르고, 미래의 나에게 하고 싶은 말을 적어보세요.</p>
+        <div class="row" id="paperSwatches"></div>
+        <p class="tip">💡 요즘 고민, 좋아하는 것, 미래의 나에게 묻고 싶은 걸 적어보면 좋아요. (쓰던 내용은 자동 저장돼요)</p>
+        <button class="btn primary big next" data-go="2">다음 →</button>
+      </div>
+
+      <div class="panel-page" data-page="2">
+        <h2>🖼️ 사진 · 그림</h2>
+        <p class="tip">사진을 올리거나 직접 그려서 폴라로이드로 붙여요.</p>
+        <div class="row">
+          <label class="btn">📷 사진 올리기<input type="file" id="photoInput" accept="image/*" hidden></label>
+          <button class="btn" id="removePhoto">떼어내기</button>
+        </div>
+        <canvas id="drawCanvas" width="600" height="600"></canvas>
+        <div class="row" id="penColors" style="margin-top:10px"></div>
+        <div class="row"><span>굵기</span><input type="range" id="penSize" min="2" max="30" value="8"><button class="btn" id="clearDraw">지우기</button></div>
+        <button class="btn" id="useDraw" style="width:100%">✨ 이 그림 붙이기</button>
+        <button class="btn primary big next" data-go="3">다음 →</button>
+      </div>
+
+      <div class="panel-page" data-page="3">
+        <h2>🍪 작은 선물</h2>
+        <p class="tip">봉지에 담을 간식을 골라요 (최대 6개). 봉지 속 간식을 누르면 뺄 수 있어요. 포장한 뒤엔 봉지를 눌러 흔들어 보세요!</p>
+        <div class="row" id="snackGrid"></div>
+        <p class="tip">리본 색</p>
+        <div class="row" id="ribbonSwatches"></div>
+        <button class="btn" id="wrapBtn" style="width:100%"></button>
+        <button class="btn primary big next" data-go="4">다음 →</button>
+      </div>
+
+      <div class="panel-page" data-page="4">
+        <h2>🕯️ 실링 왁스</h2>
+        <p class="tip">편지를 봉투에 넣었어요. 이제 진짜처럼 왁스를 녹여 도장을 찍어요.</p>
+        <ol class="ritual">
+          <li id="r1"><b>촛불 켜기</b><button class="btn" id="lightBtn" style="width:100%">🔥 성냥 긋기</button></li>
+          <li id="r2"><b>왁스 고르고 녹이기</b>
+            <div class="row" id="waxSwatches"></div>
+            <button class="btn hold" id="meltBtn">꾹 누르고 있으면 녹아요 🫗<span class="bar"><i id="meltBar"></i></span></button>
+          </li>
+          <li id="r3"><b>도장 고르고 찍기</b>
+            <div class="row" id="symbolBtns"></div>
+            <input id="initialInput" maxlength="1" placeholder="또는 이니셜 (예: C)">
+            <button class="btn primary" id="stampBtn" style="width:100%">🔏 꾹! 도장 찍기</button>
+          </li>
+        </ol>
+        <div class="row">
+          <button class="btn" id="blowBtn">💨 촛불 끄기</button>
+          <button class="btn" id="redoSealBtn">다시 하기</button>
+        </div>
+        <button class="btn primary big next" data-go="5">다음 →</button>
+      </div>
+
+      <div class="panel-page" data-page="5">
+        <h2>📦 상자에 담기</h2>
+        <p class="tip">마음에 드는 상자를 고르고, 언제 열어볼지 정해요.</p>
+        <div class="box-grid" id="boxChoices"></div>
+        <input type="date" id="deliverDate">
+        <div class="row" style="margin-top:10px">
+          <button class="btn" data-add="1:m">한 달 뒤</button>
+          <button class="btn" data-add="100:d">100일 뒤</button>
+          <button class="btn" data-add="1:y">1년 뒤</button>
+          <button class="btn" data-add="0:d">오늘(테스트)</button>
+        </div>
+        <button class="btn primary big" id="boxBtn">📦 상자에 담아 밀봉하기</button>
+      </div>
+    </aside>
+  </main>
+
+  <div id="boxStage" class="box-stage hidden">
+    <div class="box">
+      <div class="box-lid"></div>
+      <div class="box-body"><div class="box-label" id="boxLabel"></div></div>
+      <div class="box-tape"></div>
+    </div>
+    <p id="boxMsg" class="box-msg"></p>
+  </div>
+
+  <div id="opener" class="opener hidden">
+    <button id="closeOpener" class="close">✕</button>
+    <div id="openStage" class="opener-inner"></div>
+  </div>
+
+  <div id="toast"></div>
+
+
+  <script src="sfx.js"></script>
+  <script src="desk.js"></script>
+  <script src="ksfx.js"></script>
+  <script src="bake.js"></script>
+  <script src="tea.js"></script>
+  <script src="room.js"></script>
+  <script src="drawer.js"></script>
+  <script src="dessert.js"></script>
+  <script src="en.js"></script>
+  <script src="sound.js"></script>
+</body>
+</html>
